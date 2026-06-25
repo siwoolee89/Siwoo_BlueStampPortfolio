@@ -38,12 +38,7 @@ For your second milestone, explain what you've worked on since your previous mil
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/CaCazFBhYKs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-For my first milestone, I wanted to complete the exterior and design of the robot and also do the wiring. The components include wheels, an arduino board, a battery, breadboards, a vaccum, an ultrasonic sensor, and some other important components.
-For your first milestone, describe what your project is and how you plan to build it. You can include:
-- An explanation about the different components of your project and how they will all integrate together
-- Technical progress you've made so far
-- Challenges you're facing and solving in your future milestones
-- What your plan is to complete your project
+For my first milestone, I wanted to complete the exterior and design of the robot and also do the wiring. The components include wheels, an arduino board, a battery, breadboards, a vaccum, an ultrasonic sensor, and some other important items. The wheels and motor are what allow the robot to maneuver. The arduino board is used to mount the code and get the robot to move. The battery powers the system. The ultrasonic sensor will allow the robot to detect obstacles in front of it, and provide real time data so it can adjust and maneuver around the obstruction. There were several difficulties in the construction of the robot. There were instructions in order to build it, which was simple enough; however, there were no instructions for attaching the vaccum cleaner to the robot. To solve this, I removed the small breadboard and replaced it with a full sized breadboard. I attached the vaccum to one end of the breadboard, and planned to attach the other end to the robot so the vaccum sticks out in front of the robot. However, this led to a few other complications. First off, the vaccum cleaner was too big and tall for the robot, so the breadboard wouldn't be able to stick to the robot. So, I got another small breadboard and simply attached that to the robot first. Then I attached the full sized breadboard on top of the small one. Another issue was attaching the ultrasonic module. Because the circuits in breadboards are only connected across each row, the ultrasonic module would not be able to be pointed straight. So, I took the small breadboard from before and stuck on top of the edge of the full sized breadboard. I put it perpendicular to the full sized breadboard so the I could point the ultrasonic sensor forward while keeping the pins up and down a column. 
 
 # Starter
 
