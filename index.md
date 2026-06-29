@@ -5,7 +5,6 @@ A robot that cleans up the floor for me because I hate cleaning myself!
 |:--:|:--:|:--:|:--:|
 | Siwoo L. | Mitty | Electrical Engineering | Rising junior
 
-**Replace the BlueStamp logo below with an image of yourself and your completed project. Follow the guide [here](https://tomcam.github.io/least-github-pages/adding-images-github-pages-site.html) if you need help.**
 
 <img width="472" height="530" alt="Screenshot 2026-06-29 at 2 21 28 PM" src="https://github.com/user-attachments/assets/f5d4005c-0bb8-4d6e-a374-850f16c7ec4e" />
 
@@ -43,9 +42,7 @@ For my first milestone, I wanted to complete the exterior and design of the robo
 
 # Starter
 
-**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/CaCazFBhYKs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CaCazFBhYKs](https://www.youtube.com/watch?v=qBhGqpVJxa8" title="Starter Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 As a starter project, I chose the retro arcade console. Some essential components include buttons, LED dot matrix modules, and a digitron display. The buttons turn on the device as well as controlling the games. The LED dot matrix module serves as the screen, and the digitron display serves as the scoreboard. Through this project, I learned how to solder properly and what mistakes to avoid while doing it.
 
