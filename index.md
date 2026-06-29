@@ -7,7 +7,7 @@ A robot that cleans up the floor for me because I hate cleaning myself!
 
 **Replace the BlueStamp logo below with an image of yourself and your completed project. Follow the guide [here](https://tomcam.github.io/least-github-pages/adding-images-github-pages-site.html) if you need help.**
 
-![Headstone Image](logo.svg)
+![Headstone Image](https://drive.google.com/file/d/1Mesns1VpxtlfIUGwKY_EBqYKejb_acPp/view)
   
 # Final Milestone
 
