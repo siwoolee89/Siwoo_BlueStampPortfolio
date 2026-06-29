@@ -42,7 +42,7 @@ For my first milestone, I wanted to complete the exterior and design of the robo
 
 # Starter
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/CaCazFBhYKs](https://www.youtube.com/watch?v=qBhGqpVJxa8" title="Starter Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qBhGqpVJxa8?si=h7hAl-xQ921PcBfY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 As a starter project, I chose the retro arcade console. Some essential components include buttons, LED dot matrix modules, and a digitron display. The buttons turn on the device as well as controlling the games. The LED dot matrix module serves as the screen, and the digitron display serves as the scoreboard. Through this project, I learned how to solder properly and what mistakes to avoid while doing it.
 
