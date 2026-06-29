@@ -72,7 +72,7 @@ Don't forget to place the link of where to buy each component inside the quotati
 
 | **Part** | **Note** | **Price** | **Link** |
 |:--:|:--:|:--:|:--:|
-| SunFounder 3 in 1 Starter Kit | Contains all the materials in order to create the chasis of the robot | $69.99 | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
+| SunFounder 3 in 1 Starter Kit | Contains all the materials in order to create the chasis of the robot | $69.99 | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/](https://www.amazon.com/SunFounder-Ultimate-Tutorials-Beginners-Enthusiasts/dp/B0CGJ235XN/ref=sr_1_2_sspa?crid=1MF6TR1QVOLHY&dib=eyJ2IjoiMSJ9.D9LrCZJnua_keVMLJz2FWvrsniUV2B9R7DGc6wRYHz6Otpv8Utt8-__xGv1lwx9nojGY1Nf7yRZCQD83P9dNdDCT05nniwjjmOwJbx1fITkhe2Gv3KP6mgmDPUreSxmWru_gLtN4TpkL-OP8RawJc6rvWF5XYZ7Yyz8ClkhYe_9iYJjz7jCp31s_YRQ1l3HYETyUsmyyK_92n9jImO7EkfAdnRnrohBF7ArvHUxc85L8vcmJaAij8Cyuemr0kEIC2Cai0IfXb1S6hstdtj73azqfaLjIeBnJ3QxzUSMHnFo.e-MTEgeg1j3FLcFQS6ti5iwHFFl6AIHPrsoVEknDbkE&dib_tag=se&keywords=sunfounder+3+in+1&qid=1782776628&s=electronics&sprefix=sunfounder+3+in+1%2Celectronics%2C137&sr=1-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1"> Link </a> |
 | Item Name | What the item is used for | $Price | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
 | Item Name | What the item is used for | $Price | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
 
