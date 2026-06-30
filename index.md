@@ -27,6 +27,8 @@ A robot that cleans up the floor for me because I hate cleaning myself!
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
+For my second milestone, I decided to make the code for the robot to move. This includes moving forward, backwards, left, and right. This will be important since the entire point of the project is for the car to be able to move so it can clean the floor. However, there were several difficulties. Sometimes, the robot wouldn't go forward or turn properly. To fix this, I had to adjust the exterior. The vaccum cleaner was too heavy, so it weighed down the car. I stuck in some foam between the breadboard and the surface of the car so that the vaccum would be lifted just slightly more above the surface. This and increasing the speed of the car allowed it to start moving properly.
+
 For your second milestone, explain what you've worked on since your previous milestone. You can highlight:
 - Technical details of what you've accomplished and how they contribute to the final goal
 - What has been surprising about the project so far
