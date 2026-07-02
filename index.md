@@ -1,5 +1,5 @@
 # Floor Cleaning Robot
-A robot that cleans up the floor for me because I hate cleaning myself!
+A robot that cleans up the floor for me because I hate cleaning my room! We have a roomba at my house, and it has been extremely helpful. So, I thought making my own to personally use for my room would be great to have. It will be able to move and also detect objects to maneuver around them.
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|
@@ -61,9 +61,6 @@ void loop() {
 ```
 
 # Bill of Materials
-Here's where you'll list the parts in your project. To add more rows, just copy and paste the example rows below.
-Don't forget to place the link of where to buy each component inside the quotation marks in the corresponding row after href =. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize this to your project needs. 
-
 | **Part** | **Note** | **Price** | **Link** |
 |:--:|:--:|:--:|:--:|
 | SunFounder 3 in 1 Starter Kit | Contains all the materials in order to create the chasis of the robot | $69.99 | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/](https://www.amazon.com/SunFounder-Ultimate-Tutorials-Beginners-Enthusiasts/dp/B0CGJ235XN/ref=sr_1_2_sspa?crid=1MF6TR1QVOLHY&dib=eyJ2IjoiMSJ9.D9LrCZJnua_keVMLJz2FWvrsniUV2B9R7DGc6wRYHz6Otpv8Utt8-__xGv1lwx9nojGY1Nf7yRZCQD83P9dNdDCT05nniwjjmOwJbx1fITkhe2Gv3KP6mgmDPUreSxmWru_gLtN4TpkL-OP8RawJc6rvWF5XYZ7Yyz8ClkhYe_9iYJjz7jCp31s_YRQ1l3HYETyUsmyyK_92n9jImO7EkfAdnRnrohBF7ArvHUxc85L8vcmJaAij8Cyuemr0kEIC2Cai0IfXb1S6hstdtj73azqfaLjIeBnJ3QxzUSMHnFo.e-MTEgeg1j3FLcFQS6ti5iwHFFl6AIHPrsoVEknDbkE&dib_tag=se&keywords=sunfounder+3+in+1&qid=1782776628&s=electronics&sprefix=sunfounder+3+in+1%2Celectronics%2C137&sr=1-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1"> Link </a> |
