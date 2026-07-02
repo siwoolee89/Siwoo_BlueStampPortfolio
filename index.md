@@ -8,39 +8,31 @@ A robot that cleans up the floor for me because I hate cleaning myself!
 
 <img width="472" height="530" alt="Screenshot 2026-06-29 at 2 21 28 PM" src="https://github.com/user-attachments/assets/f5d4005c-0bb8-4d6e-a374-850f16c7ec4e" />
 
-  
+<!--  
 # Final Milestone
 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-<!--For your final milestone, explain the outcome of your project. Key details to include are:
+For your final milestone, explain the outcome of your project. Key details to include are:
 - What you've accomplished since your previous milestone
 - What your biggest challenges and triumphs were at BSE
 - A summary of key topics you learned about
 - What you hope to learn in the future after everything you've learned at BSE
-
+-->
 
 
 # Second Milestone
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XC_h1YrTGfY?si=G6Vd2hrbpergPy9Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+For my second milestone, I decided to make the code for the robot to move. This includes moving forward, backwards, left, and right. This will be important since the entire point of the project is for the car to be able to move so it can clean the floor. It will also be able to do more complex movements, such as avoiding obstacles by using sensors. The ultrasonic module can detect objects in front of it, and the car will move out of the way if there is something 2 to 10 cm in front of it. There are also sensors on the side of the car. This allows it to move out of the way if there is an obstacle on the side that the front sensor can't detect. However, there were several difficulties. Sometimes, the robot wouldn't go forward or turn properly. To fix this, I had to adjust the exterior. The vaccum cleaner was too heavy, so it weighed down the car. I taped a caster wheel onto the back of the vaccum. This allowed it to be slightly elavated above the ground so it doesn't cause friction. Additionally, I changed the speed of one of the wheels so that it doesn't swerve off to the side. Overall, the code seems to be working very well. The robot moves properly with little swerving. And when it detects an obstacle, it maneuvers out of the way properly. My next steps are going to be adding modifications. One modification I plan to add is a buzzer so that it can play a sound when the robot finishes cleaning.
 
-For my second milestone, I decided to make the code for the robot to move. This includes moving forward, backwards, left, and right. This will be important since the entire point of the project is for the car to be able to move so it can clean the floor. However, there were several difficulties. Sometimes, the robot wouldn't go forward or turn properly. To fix this, I had to adjust the exterior. The vaccum cleaner was too heavy, so it weighed down the car. I stuck in some foam between the breadboard and the surface of the car so that the vaccum would be lifted just slightly more above the surface. This and increasing the speed of the car allowed it to start moving properly.
-
-For your second milestone, explain what you've worked on since your previous milestone. You can highlight:
-- Technical details of what you've accomplished and how they contribute to the final goal
-- What has been surprising about the project so far
-- Previous challenges you faced that you overcame
-- What needs to be completed before your final milestone 
--->
 # First Milestone
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Skr94AJwVgE?si=Ho1cachBUrD_6yUX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/CaCazFBhYKs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-For my first milestone, I wanted to complete the exterior and design of the robot and also do the wiring. The components include wheels, an arduino board, a battery, breadboards, a vaccum, an ultrasonic sensor, and some other important items. The wheels and motor are what allow the robot to maneuver. The arduino board is used to mount the code and get the robot to move. The battery powers the system. The ultrasonic sensor will allow the robot to detect obstacles in front of it, and provide real time data so it can adjust and maneuver around the obstruction. There were several difficulties in the construction of the robot. There were instructions in order to build it, which was simple enough; however, there were no instructions for attaching the vaccum cleaner to the robot. To solve this, I removed the small breadboard and replaced it with a full sized breadboard. I attached the vaccum to one end of the breadboard, and planned to attach the other end to the robot so the vaccum sticks out in front of the robot. However, this led to a few other complications. First off, the vaccum cleaner was too big and tall for the robot, so the breadboard wouldn't be able to stick to the robot. So, I got another small breadboard and simply attached that to the robot first. Then I attached the full sized breadboard on top of the small one. Another issue was attaching the ultrasonic module. Because the circuits in breadboards are only connected across each row, the ultrasonic module would not be able to be pointed straight. So, I took the small breadboard from before and stuck on top of the edge of the full sized breadboard. I put it perpendicular to the full sized breadboard so the I could point the ultrasonic sensor forward while keeping the pins up and down a column. 
+For my first milestone, I wanted to complete the exterior and design of the robot and also do the wiring. The components include wheels, an arduino board, a battery, breadboards, a vaccum, an ultrasonic sensor, and some other important items. The wheels and motor are what allow the robot to maneuver. The arduino board is used to mount the code and get the robot to move. The battery powers the system. The ultrasonic sensor will allow the robot to detect obstacles in front of it, and provide real time data so it can adjust and maneuver around the obstruction. There were several difficulties in the construction of the robot. There were instructions in order to build it, which was simple enough; however, there were no instructions for attaching the vaccum cleaner to the robot. To solve this, I removed the small breadboard and replaced it with a full sized breadboard. I attached the vaccum to one end of the breadboard, and planned to attach the other end to the robot so the vaccum sticks out in front of the robot. However, this led to a few other complications. First off, the vaccum cleaner was too big and tall for the robot, so the breadboard wouldn't be able to stick to the robot. So, I got another small breadboard and simply attached that to the robot first. Then I attached the full sized breadboard on top of the small one. Another issue was attaching the ultrasonic module. Because the circuits in breadboards are only connected across each row, the ultrasonic module would not be able to be pointed straight. So, I took the small breadboard from before and stuck on top of the edge of the full sized breadboard. I put it perpendicular to the full sized breadboard so the I could point the ultrasonic sensor forward while keeping the pins up and down a column. Overall, the design of the car works perfectly and all the wires are connected to the proper places. My next step is coding the robot so that it can move properly.
 
 # Starter
 
