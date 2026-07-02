@@ -11,8 +11,9 @@ A robot that cleans up the floor for me because I hate cleaning my room! We have
 <!--  
 # Final Milestone
 
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+My final milestone was adding modifications. I added several new changes beyond the base robot, one of them being a remote control. The remote control doesn't allow you to explicitly control the robot, but it does allow you to stop the car and move it backwards. It also has a button to initiate self driving. Basically, the self driving is the code from the previous milestone, allowing the car to turn when it sees obstacles and continue moving forward. Additionally, when the car is told to stop, it will also play a buzzer sound to let the user know it has stopped moving. 
 
 For your final milestone, explain the outcome of your project. Key details to include are:
 - What you've accomplished since your previous milestone
@@ -69,8 +70,8 @@ void loop() {
 
 # Other Resources/Examples
 One of the best parts about Github is that you can view how other people set up their own work. Here are some past BSE portfolios that are awesome examples. You can view how they set up their portfolio, and you can view their index.md files to understand how they implemented different portfolio components.
-- [Example 1](https://trashytuber.github.io/YimingJiaBlueStamp/)
-- [Example 2](https://sviatil0.github.io/Sviatoslav_BSE/)
+- https://docs.sunfounder.com/projects/3in1-kit-v2/en/latest/car_project/car_assemble.html
+- https://smitra123.github.io/Saagnik-Mitra-s-BSE-Portfolio/
 - [Example 3](https://arneshkumar.github.io/arneshbluestamp/)
 
 To watch the BSE tutorial on how to create a portfolio, click here.
