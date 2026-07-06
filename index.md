@@ -280,9 +280,6 @@ String decodeKeyValue(long result) {
 | Arduino UNO R3 | A microcontroller that reads physical inputs and controls outputs | $9.99 | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/](https://www.amazon.com/ATmega328P-Arduino-Compatible-Arduino-Voltage-Compatible/dp/B0FMR3NRHH/ref=sxin_20_pa_sp_search_thematic_sspa?content-id=amzn1.sym.292df443-b323-44ae-8b40-9a666975b8b5%3Aamzn1.sym.292df443-b323-44ae-8b40-9a666975b8b5&crid=3SWISGYHLYM17&cv_ct_cx=arduino+uno+r3&keywords=arduino+uno+r3&pd_rd_i=B0FMR3NRHH&pd_rd_r=34bf79ca-c4b5-4fa3-93e9-8bb64feb9be7&pd_rd_w=3tK7P&pd_rd_wg=tYdwl&pf_rd_p=292df443-b323-44ae-8b40-9a666975b8b5&pf_rd_r=G0TJM6X8J4E47J2GZNBE&qid=1782776935&s=electronics&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sprefix=arduino+uno+r3%2Celectronics%2C142&sr=1-3-6024b2a3-78e4-4fed-8fed-e1613be3bcce-spons&aref=EBJyi2Mu5B&sp_csd=d2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWM&psc=1"> Link </a> |
 
 # Other Resources/Examples
-<img width="995" height="422" alt="Screenshot 2026-07-06 at 3 33 07 PM" src="https://github.com/user-attachments/assets/aefdf3c3-3aaf-48f2-ac64-b9f44f0450d8" />
 
 - https://docs.sunfounder.com/projects/3in1-kit-v2/en/latest/car_project/car_assemble.html
 - https://smitra123.github.io/Saagnik-Mitra-s-BSE-Portfolio/
-
-To watch the BSE tutorial on how to create a portfolio, click here.
