@@ -8,6 +8,8 @@ A robot that cleans up the floor for me because I hate cleaning my room! We have
 
 <img width="472" height="530" alt="Screenshot 2026-06-29 at 2 21 28 PM" src="https://github.com/user-attachments/assets/f5d4005c-0bb8-4d6e-a374-850f16c7ec4e" />
 
+<img width="645" height="499" alt="Screenshot 2026-07-06 at 4 01 48 PM" src="https://github.com/user-attachments/assets/0b7ee53f-4cda-4e3e-b871-547b33376c46" />
+
 <!--  
 # Final Milestone
 
