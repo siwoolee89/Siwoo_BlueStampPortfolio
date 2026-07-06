@@ -27,13 +27,13 @@ For your final milestone, explain the outcome of your project. Key details to in
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XC_h1YrTGfY?si=G6Vd2hrbpergPy9Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-For my second milestone, I decided to make the code for the robot to move. This includes moving forward, backwards, left, and right. This will be important since the entire point of the project is for the car to be able to move so it can clean the floor. It will also be able to do more complex movements, such as avoiding obstacles by using sensors. The ultrasonic module can detect objects in front of it, and the car will move out of the way if there is something 2 to 10 cm in front of it. There are also sensors on the side of the car. This allows it to move out of the way if there is an obstacle on the side that the front sensor can't detect. However, there were several difficulties. Sometimes, the robot wouldn't go forward or turn properly. To fix this, I had to adjust the exterior. The vaccum cleaner was too heavy, so it weighed down the car. I taped a caster wheel onto the back of the vaccum. This allowed it to be slightly elavated above the ground so it doesn't cause friction. Additionally, I changed the speed of one of the wheels so that it doesn't swerve off to the side. Overall, the code seems to be working very well. The robot moves properly with little swerving. And when it detects an obstacle, it maneuvers out of the way properly. My next steps are going to be adding modifications. One modification I plan to add is a buzzer so that it can play a sound when the robot finishes cleaning.
+For my second milestone, I decided to make the code for the robot to move. This includes moving forward, backwards, left, and right. This will be important since the entire point of the project is for the car to be able to move so it can clean the floor. It will also be able to do more complex movements, such as avoiding obstacles by using sensors. The ultrasonic module can detect objects in front of it, and the car will move out of the way if there is something 2 to 10 cm in front of it. There are also sensors on the side of the car. This allows it to move out of the way if there is an obstacle on the side that the front sensor can't detect. However, there were several difficulties. Sometimes, the robot wouldn't go forward or turn properly. To fix this, I had to adjust the exterior. The vacuum cleaner was too heavy, so it weighed down the car. I taped a caster wheel onto the back of the vacuum. This allowed it to be slightly elavated above the ground so it doesn't cause friction. Additionally, I changed the speed of one of the wheels so that it doesn't swerve off to the side. Overall, the code seems to be working very well. The robot moves properly with little swerving. And when it detects an obstacle, it maneuvers out of the way properly. My next steps are going to be adding modifications. One modification I plan to add is a buzzer so that it can play a sound when the robot finishes cleaning.
 
 # First Milestone
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Skr94AJwVgE?si=Ho1cachBUrD_6yUX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-For my first milestone, I wanted to complete the exterior and design of the robot and also do the wiring. The components include wheels, an arduino board, a battery, breadboards, a vaccum, an ultrasonic sensor, and some other important items. The wheels and motor are what allow the robot to maneuver. The arduino board is used to mount the code and get the robot to move. The battery powers the system. The ultrasonic sensor will allow the robot to detect obstacles in front of it, and provide real time data so it can adjust and maneuver around the obstruction. There were several difficulties in the construction of the robot. There were instructions in order to build it, which was simple enough; however, there were no instructions for attaching the vaccum cleaner to the robot. To solve this, I removed the small breadboard and replaced it with a full sized breadboard. I attached the vaccum to one end of the breadboard, and planned to attach the other end to the robot so the vaccum sticks out in front of the robot. However, this led to a few other complications. First off, the vaccum cleaner was too big and tall for the robot, so the breadboard wouldn't be able to stick to the robot. So, I got another small breadboard and simply attached that to the robot first. Then I attached the full sized breadboard on top of the small one. Another issue was attaching the ultrasonic module. Because the circuits in breadboards are only connected across each row, the ultrasonic module would not be able to be pointed straight. So, I took the small breadboard from before and stuck on top of the edge of the full sized breadboard. I put it perpendicular to the full sized breadboard so the I could point the ultrasonic sensor forward while keeping the pins up and down a column. Overall, the design of the car works perfectly and all the wires are connected to the proper places. My next step is coding the robot so that it can move properly.
+For my first milestone, I wanted to complete the exterior and design of the robot and also do the wiring. The components include wheels, an arduino board, a battery, breadboards, a vacuum, an ultrasonic sensor, and some other important items. The wheels and motor are what allow the robot to maneuver. The arduino board is used to mount the code and get the robot to move. The battery powers the system. The ultrasonic sensor will allow the robot to detect obstacles in front of it, and provide real time data so it can adjust and maneuver around the obstruction. There were several difficulties in the construction of the robot. There were instructions in order to build it, which was simple enough; however, there were no instructions for attaching the vacuum cleaner to the robot. To solve this, I removed the small breadboard and replaced it with a full sized breadboard. I attached the vacuum to one end of the breadboard, and planned to attach the other end to the robot so the vacuum sticks out in front of the robot. However, this led to a few other complications. First off, the vacuum cleaner was too big and tall for the robot, so the breadboard wouldn't be able to stick to the robot. So, I got another small breadboard and simply attached that to the robot first. Then I attached the full sized breadboard on top of the small one. Another issue was attaching the ultrasonic module. Because the circuits in breadboards are only connected across each row, the ultrasonic module would not be able to be pointed straight. So, I took the small breadboard from before and stuck on top of the edge of the full sized breadboard. I put it perpendicular to the full sized breadboard so the I could point the ultrasonic sensor forward while keeping the pins up and down a column. Overall, the design of the car works perfectly and all the wires are connected to the proper places. My next step is coding the robot so that it can move properly.
 
 # Starter
 
@@ -50,15 +50,225 @@ As a starter project, I chose the retro arcade console. Some essential component
 Here's where you'll put your code. The syntax below places it into a block of code. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize it to your project needs. 
 
 ```c++
+#include <EEPROM.h>
+#include <IRremote.h>
+
+const int IR_RECEIVE_PIN = 12;  // Define the pin number for the IR Sensor
+const int BUZZER_PIN = 11;      // Define the pin for the buzzer
+
+float leftOffset = 1.0;
+float rightOffset = 1.0;
+
+const int A_1B = 5;
+const int A_1A = 6;
+const int B_1B = 9;
+const int B_1A = 10;
+
+const int trigPin = 3;
+const int echoPin = 4;
+
+const int rightIR = 7;
+const int leftIR = 8;
+
+// State variable
+bool isSelfDriving = false; 
+
+// Function prototype declarations
+String decodeKeyValue(long result);
+float readSensorData();
+void moveForward(int speed);
+void moveBackward(int speed);
+void stopMove();
+void backLeft(int speed);
+void backRight(int speed);
+void playFinishedSound(); 
+
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(9600);
-  Serial.println("Hello World!");
+
+  // Motor pins configuration
+  pinMode(A_1B, OUTPUT);
+  pinMode(A_1A, OUTPUT);
+  pinMode(B_1B, OUTPUT);
+  pinMode(B_1A, OUTPUT);
+
+  pinMode(leftIR, INPUT);
+  pinMode(rightIR, INPUT);
+  
+  // Buzzer configuration
+  pinMode(BUZZER_PIN, OUTPUT); 
+
+  // Write calibration offsets to EEPROM
+  EEPROM.write(0, 100);  // left motor offset
+  EEPROM.write(1, 100); // right motor offset
+
+  // Ultrasonic sensor configuration
+  pinMode(echoPin, INPUT);
+  pinMode(trigPin, OUTPUT);
+  leftOffset = EEPROM.read(0) * 0.01;
+  rightOffset = EEPROM.read(1) * 0.01;
+
+  // Initialize IR remote receiver
+  IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); 
+  Serial.println("REMOTE CONTROL START");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  // 1. CHECK FOR IR REMOTE COMMANDS FIRST
+  if (IrReceiver.decode()) {
+    String key = decodeKeyValue(IrReceiver.decodedIRData.command);
+    
+    if (key != "ERROR") {
+      Serial.println(key);
 
+      if (key == "1") {
+        isSelfDriving = true;  // Activate self-driving
+        Serial.println("Self-Driving: ON");
+      } 
+      else if (key == "2") {
+        isSelfDriving = false; // Deactivate self-driving
+        stopMove();            // Instantly stop the car
+        Serial.println("Self-Driving: OFF (STOPPED)");
+        playFinishedSound();   // Play the completion chime and reset IR
+      }
+      else if (key == "3") {
+        isSelfDriving = false;
+        stopMove();
+        delay(500);
+        moveBackward(150);
+      }
+    }
+    IrReceiver.resume();  // Enable receiving of the next value
+  }
+
+  // 2. EXECUTE SELF-DRIVING LOGIC (ONLY IF ACTIVATED)
+  if (isSelfDriving) {
+    float distance = readSensorData();
+    int leftSide = digitalRead(leftIR);   // 0: Obstructed  1: Empty
+    int rightSide = digitalRead(rightIR);
+
+    //Ultrasonic sensor
+    if (distance >= 1.00 && distance <= 10.00) {
+      stopMove();
+      delay(200);
+      backRight(255);   // Turns RIGHT at max power to clear obstacle faster
+      delay(600);       
+    } 
+    //Front path clear checks sides
+    else {
+      if (!leftSide && rightSide) {
+        //If left blocked turn left
+        backLeft(255);
+        delay(400);
+      } 
+      else if (leftSide && !rightSide) {
+        //If right blocked turn right
+        backRight(255);
+        delay(400);
+      } 
+      else if (!leftSide && !rightSide) {
+        //If both sides blocked back up
+        moveBackward(150);
+        delay(500);
+      } 
+      //If everything clear
+      else {
+        moveForward(150);
+      }
+    } 
+  }
+}
+
+//Function for buzzer when stopped moving
+void playFinishedSound() {
+  tone(BUZZER_PIN, 300, 150); 
+  delay(200);
+  tone(BUZZER_PIN, 350, 150); 
+  delay(200);
+  tone(BUZZER_PIN, 400, 400); 
+  delay(450);
+
+  noTone(BUZZER_PIN); // Relinquish timer hardware back to the system
+  
+  // Re-initialize the IR receiver so it continues to work after the buzzer sounds
+  IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); 
+  Serial.println("IR Receiver Reset & Ready");
+}
+
+// Function to read the ultrasonic distance sensor
+float readSensorData() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  float distance = pulseIn(echoPin, HIGH) / 58.00; 
+  return distance;
+}
+
+// Motor movement functions
+void moveForward(int speed) {
+  analogWrite(A_1B, 0);
+  analogWrite(A_1A, int(speed * leftOffset));
+  analogWrite(B_1B, int(speed * rightOffset));
+  analogWrite(B_1A, 0);
+}
+
+void moveBackward(int speed) {
+  analogWrite(A_1B, int(speed * leftOffset));
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, 0);
+  analogWrite(B_1A, int(speed * rightOffset));
+}
+
+void stopMove() {
+  analogWrite(A_1B, 0);
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, 0);
+  analogWrite(B_1A, 0);
+}
+
+void backLeft(int speed) {
+  analogWrite(A_1B, speed); // Left motor backwards
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, speed); // Right motor forwards
+  analogWrite(B_1A, 0);
+}
+
+void backRight(int speed) {
+  analogWrite(A_1B, 0);     // Left motor forwards
+  analogWrite(A_1A, speed);
+  analogWrite(B_1B, 0);     // Right motor backwards
+  analogWrite(B_1A, speed);
+}
+
+// Map the hexadecimal codes to remote button names
+String decodeKeyValue(long result) {
+  switch(result){
+    case 0x16: return "0";
+    case 0xC:  return "1"; 
+    case 0x18: return "2"; 
+    case 0x5E: return "3"; 
+    case 0x8:  return "4"; 
+    case 0x1C: return "5"; 
+    case 0x5A: return "6"; 
+    case 0x42: return "7"; 
+    case 0x52: return "8"; 
+    case 0x4A: return "9"; 
+    case 0x9:  return "+"; 
+    case 0x15: return "-"; 
+    case 0x7:  return "EQ"; 
+    case 0xD:  return "U/SD";
+    case 0x19: return "CYCLE";         
+    case 0x44: return "PLAY/PAUSE";   
+    case 0x43: return "FORWARD";   
+    case 0x40: return "BACKWARD";   
+    case 0x45: return "POWER";   
+    case 0x47: return "MUTE";   
+    case 0x46: return "MODE";       
+    case 0x0:  return "ERROR";   
+    default :  return "ERROR";
+  }
 }
 ```
 
