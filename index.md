@@ -51,12 +51,22 @@ As a starter project, I chose the retro arcade console. Some essential component
 ```c++
 #include <EEPROM.h>
 #include <IRremote.h>
+#include <Wire.h>
+#include <MPU6050_light.h> // Ensure "MPU6050_light" by rfetick is installed via Library Manager
+
+MPU6050 mpu(Wire);
 
 const int IR_RECEIVE_PIN = 12;  // Define the pin number for the IR Sensor
 const int BUZZER_PIN = 11;      // Define the pin for the buzzer
 
 float leftOffset = 1.0;
 float rightOffset = 1.0;
+
+// Gyroscope tracking variables
+float targetAngle = 0;
+float kp = 7.0;        // Proportional gain (handles immediate drift)
+float ki = 0.3;        // Integral gain (eliminates persistent veering/steady-state error)
+float integralE = 0;   // Accumulates error over time to force the car straight
 
 const int A_1B = 5;
 const int A_1A = 6;
@@ -75,7 +85,7 @@ bool isSelfDriving = false;
 // Function prototype declarations
 String decodeKeyValue(long result);
 float readSensorData();
-void moveForward(int speed);
+void moveForwardGyro(int baseSpeed); // Uses Gyro to drive straight
 void moveBackward(int speed);
 void stopMove();
 void backLeft(int speed);
@@ -84,6 +94,7 @@ void playFinishedSound();
 
 void setup() {
   Serial.begin(9600);
+  Wire.begin();
 
   // Motor pins configuration
   pinMode(A_1B, OUTPUT);
@@ -97,9 +108,10 @@ void setup() {
   // Buzzer configuration
   pinMode(BUZZER_PIN, OUTPUT); 
 
-  // Write calibration offsets to EEPROM
-  EEPROM.write(0, 100);  // left motor offset
-  EEPROM.write(1, 100); // right motor offset
+  // --- HARDWARE CALIBRATION ---
+  // Ex: If your car naturally veers right, your left motor might be stronger.
+  EEPROM.write(0, 100); // left motor offset percentage (0 to 100)
+  EEPROM.write(1, 100); // right motor offset percentage (0 to 100)
 
   // Ultrasonic sensor configuration
   pinMode(echoPin, INPUT);
@@ -107,12 +119,26 @@ void setup() {
   leftOffset = EEPROM.read(0) * 0.01;
   rightOffset = EEPROM.read(1) * 0.01;
 
+  // Initialize Gyroscope
+  Serial.println("CALIBRATING GYRO. KEEP CAR PERFECTLY STILL...");
+  byte mpuStatus = mpu.begin();
+  if(mpuStatus != 0) {
+    Serial.println("Could not connect to MPU6050!");
+    while(1); // Freeze if gyro is missing/miswired
+  }
+  delay(1000);
+  mpu.calcOffsets(); // Calibrates baseline offsets (car must be static here)
+  Serial.println("GYRO CALIBRATED & READY");
+
   // Initialize IR remote receiver
   IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); 
   Serial.println("REMOTE CONTROL START");
 }
 
 void loop() {
+  // Read gyro orientation on every loop cycle
+  mpu.update();
+
   // 1. CHECK FOR IR REMOTE COMMANDS FIRST
   if (IrReceiver.decode()) {
     String key = decodeKeyValue(IrReceiver.decodedIRData.command);
@@ -122,6 +148,8 @@ void loop() {
 
       if (key == "1") {
         isSelfDriving = true;  // Activate self-driving
+        targetAngle = mpu.getAngleZ(); // Lock in current direction as "straight ahead"
+        integralE = 0;                 // Clear any leftover accumulated error
         Serial.println("Self-Driving: ON");
       } 
       else if (key == "2") {
@@ -146,39 +174,90 @@ void loop() {
     int leftSide = digitalRead(leftIR);   // 0: Obstructed  1: Empty
     int rightSide = digitalRead(rightIR);
 
-    //Ultrasonic sensor
+    // Ultrasonic sensor detects obstacle ahead
     if (distance >= 1.00 && distance <= 10.00) {
       stopMove();
       delay(200);
       backRight(255);   // Turns RIGHT at max power to clear obstacle faster
       delay(600);       
+      
+      // Stop and let chassis settle before locking new direction
+      stopMove();
+      delay(150);
+      targetAngle = mpu.getAngleZ(); 
+      integralE = 0;    // Reset error accumulator for the new straight line path
     } 
-    //Front path clear checks sides
+    // Front path clear, check sides
     else {
       if (!leftSide && rightSide) {
-        //If left blocked turn left
+        // If left blocked turn left
         backLeft(255);
         delay(400);
+        
+        stopMove();
+        delay(150);
+        targetAngle = mpu.getAngleZ();
+        integralE = 0;
       } 
       else if (leftSide && !rightSide) {
-        //If right blocked turn right
+        // If right blocked turn right
         backRight(255);
         delay(400);
+        
+        stopMove();
+        delay(150);
+        targetAngle = mpu.getAngleZ();
+        integralE = 0;
       } 
       else if (!leftSide && !rightSide) {
-        //If both sides blocked back up
+        // If both sides blocked back up
         moveBackward(150);
         delay(500);
+        
+        stopMove();
+        delay(150);
+        targetAngle = mpu.getAngleZ();
+        integralE = 0;
       } 
-      //If everything clear
+      // If everything clear, move straight using gyro correction
       else {
-        moveForward(150);
+        moveForwardGyro(150);
       }
     } 
   }
 }
 
-//Function for buzzer when stopped moving
+// Gyroscope-assisted Forward Movement (PI Control)
+void moveForwardGyro(int baseSpeed) {
+  float currentAngle = mpu.getAngleZ();
+  float error = targetAngle - currentAngle; // Calculate angular drift
+
+  // Accumulate error over time to combat steady-state veering
+  integralE += error;
+  
+  // Constrain integral to prevent "windup" (runaway runaway speed corrections)
+  integralE = constrain(integralE, -50.0, 50.0); 
+
+  // Combined P (immediate) and I (time-based) correction
+  // Note: If car spins uncontrollably out of a straight line, remove the negative signs below
+  int correction = int((-error * kp) + (-integralE * ki)); 
+
+  // Apply correction adjustments to baseline wheel speeds
+  int leftSpeed = baseSpeed + correction;
+  int rightSpeed = baseSpeed - correction;
+
+  // Clamp constraints so PWM stays within valid limits (0 to 255)
+  leftSpeed = constrain(leftSpeed, 0, 255);
+  rightSpeed = constrain(rightSpeed, 0, 255);
+
+  // Drive H-bridge motors
+  analogWrite(A_1B, 0);
+  analogWrite(A_1A, int(leftSpeed * leftOffset));
+  analogWrite(B_1B, int(rightSpeed * rightOffset));
+  analogWrite(B_1A, 0);
+}
+
+// Function for buzzer when stopped moving
 void playFinishedSound() {
   tone(BUZZER_PIN, 300, 150); 
   delay(200);
@@ -203,14 +282,6 @@ float readSensorData() {
   digitalWrite(trigPin, LOW);
   float distance = pulseIn(echoPin, HIGH) / 58.00; 
   return distance;
-}
-
-// Motor movement functions
-void moveForward(int speed) {
-  analogWrite(A_1B, 0);
-  analogWrite(A_1A, int(speed * leftOffset));
-  analogWrite(B_1B, int(speed * rightOffset));
-  analogWrite(B_1A, 0);
 }
 
 void moveBackward(int speed) {
