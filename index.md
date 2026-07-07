@@ -5,10 +5,9 @@ A robot that cleans up the floor for me because I hate cleaning my room! We have
 |:--:|:--:|:--:|:--:|
 | Siwoo L. | Mitty | Electrical Engineering | Rising junior
 
-
 <img width="472" height="530" alt="Screenshot 2026-06-29 at 2 21 28 PM" src="https://github.com/user-attachments/assets/f5d4005c-0bb8-4d6e-a374-850f16c7ec4e" />
 
-<img width="645" height="499" alt="Screenshot 2026-07-06 at 4 01 48 PM" src="https://github.com/user-attachments/assets/0b7ee53f-4cda-4e3e-b871-547b33376c46" />
+<img width="678" height="501" alt="Screenshot 2026-07-07 at 3 59 54 PM" src="https://github.com/user-attachments/assets/7a027018-a5ef-4a4f-9b64-004608bcf3b6" />
 
 <!--  
 # Final Milestone
@@ -45,7 +44,7 @@ As a starter project, I chose the retro arcade console. Some essential component
 
 
 # Schematics 
-<img width="1010" height="466" alt="Screenshot 2026-07-06 at 3 34 10 PM" src="https://github.com/user-attachments/assets/b1065425-201c-47a9-9c49-4776b3e00409" />
+<img width="985" height="546" alt="Screenshot 2026-07-07 at 3 59 45 PM" src="https://github.com/user-attachments/assets/b2034f05-db6f-4fb8-8353-87cdda3bd3c2" />
 
 
 # Code
