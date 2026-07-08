@@ -14,7 +14,7 @@ A robot that cleans up the floor for me because I hate cleaning my room! We have
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-My final milestone was adding modifications. I added several new changes beyond the base robot, one of them being a remote control. The remote control doesn't allow you to explicitly control the robot, but it does allow you to stop the car and move it backwards. It also has a button to initiate self driving. Basically, the self driving is the code from the previous milestone, allowing the car to turn when it sees obstacles and continue moving forward. It is automatic, and doesn't require you to control the robot. Additionally, when the car is told to stop, it will also play a buzzer sound to let the user know it has stopped moving. Another button makes it move in reverse until it is told to stop. These options were added because I originally wanted a way for the robot to let the user know when it is done cleaning. So, I decided the best way is for the user to tell the robot when to stop themselves. This way, it still allows the robot the be automatic while also allowing the user to stop the car when they are personally satisfied with the job. It also allows for a bit more maneuverability with the reverse function. 
+My final milestone was adding modifications. I added several new changes beyond the base robot, one of them being a remote control. The remote control doesn't allow you to explicitly control the robot, but it does allow you to stop the car and move it backwards. It also has a button to initiate self driving. Basically, the self driving is the code from the previous milestone, allowing the car to turn when it sees obstacles and continue moving forward. It is automatic, and doesn't require you to control the robot. Additionally, when the car is told to stop, it will also play a buzzer sound to let the user know it has stopped moving. Another button makes it move in reverse until it is told to stop. These options were added because I originally wanted a way for the robot to let the user know when it is done cleaning. So, I decided the best way is for the user to tell the robot when to stop themselves. This way, it still allows the robot the be automatic while also allowing the user to stop the car when they are personally satisfied with the job. It also allows for a bit more maneuverability with the reverse function. I also added a gyroscope. I mounted it onto the breadboard and wired it into the arduino. Afterwards, I programmed it so that the car could move in a straight line. There were several issues with this however. Sometimes, the car still moved off to the side or even stopped entirely. To fix this, I had to replace the battery. I also had to increase the correction strength of the gyroscope. After making these changes, when the car veers a bit to one direction, the gyroscope will realign the car so that it goes back into a straight line. This was a helpful addition to the car since it would always swerve to one side. 
 
 For your final milestone, explain the outcome of your project. Key details to include are:
 - What you've accomplished since your previous milestone
@@ -52,21 +52,21 @@ As a starter project, I chose the retro arcade console. Some essential component
 #include <EEPROM.h>
 #include <IRremote.h>
 #include <Wire.h>
-#include <MPU6050_light.h> // Ensure "MPU6050_light" by rfetick is installed via Library Manager
+#include <MPU6050_light.h> 
 
 MPU6050 mpu(Wire);
 
-const int IR_RECEIVE_PIN = 12;  // Define the pin number for the IR Sensor
-const int BUZZER_PIN = 11;      // Define the pin for the buzzer
+const int IR_RECEIVE_PIN = 12;  
+const int BUZZER_PIN = 11;      // Custom non-blocking buzzer to avoid timer conflicts
 
 float leftOffset = 1.0;
 float rightOffset = 1.0;
 
-// Gyroscope tracking variables
+// --- TUNED FOR FRESH BATTERIES ---
 float targetAngle = 0;
-float kp = 7.0;        // Proportional gain (handles immediate drift)
-float ki = 0.3;        // Integral gain (eliminates persistent veering/steady-state error)
-float integralE = 0;   // Accumulates error over time to force the car straight
+float kp = 4.0;        // Bumped up to give the gyro more correction strength
+float ki = 0.15;       // Re-enabled a small amount to eliminate the steady left pull
+float integralE = 0;  
 
 const int A_1B = 5;
 const int A_1A = 6;
@@ -79,24 +79,22 @@ const int echoPin = 4;
 const int rightIR = 7;
 const int leftIR = 8;
 
-// State variable
 bool isSelfDriving = false; 
 
-// Function prototype declarations
+// Function prototypes
 String decodeKeyValue(long result);
 float readSensorData();
-void moveForwardGyro(int baseSpeed); // Uses Gyro to drive straight
+void moveForwardGyro(int baseSpeed); 
 void moveBackward(int speed);
 void stopMove();
 void backLeft(int speed);
 void backRight(int speed);
-void playFinishedSound(); 
+void playFinishedSoundNonBlocking(); 
 
 void setup() {
   Serial.begin(9600);
   Wire.begin();
 
-  // Motor pins configuration
   pinMode(A_1B, OUTPUT);
   pinMode(A_1A, OUTPUT);
   pinMode(B_1B, OUTPUT);
@@ -105,41 +103,45 @@ void setup() {
   pinMode(leftIR, INPUT);
   pinMode(rightIR, INPUT);
   
-  // Buzzer configuration
   pinMode(BUZZER_PIN, OUTPUT); 
 
-  // --- HARDWARE CALIBRATION ---
-  // Ex: If your car naturally veers right, your left motor might be stronger.
-  EEPROM.write(0, 100); // left motor offset percentage (0 to 100)
-  EEPROM.write(1, 100); // right motor offset percentage (0 to 100)
+  // --- MOTOR POWER BALANCE CALIBRATION ---
+  // Default equal power:
+  EEPROM.write(0, 100); // Left motor power (0 to 100%)
+  EEPROM.write(1, 100); // Right motor power (0 to 100%)
+  
+  // NOTE: If your car hooks hard RIGHT immediately on takeoff, uncomment these:
+  // EEPROM.write(0, 85);  // Throttle down the stronger left motor
+  // EEPROM.write(1, 100);
 
-  // Ultrasonic sensor configuration
+  // NOTE: If your car hooks hard LEFT immediately on takeoff, uncomment these:
+  // EEPROM.write(0, 100);
+  // EEPROM.write(1, 85);   // Throttle down the stronger right motor
+
   pinMode(echoPin, INPUT);
   pinMode(trigPin, OUTPUT);
   leftOffset = EEPROM.read(0) * 0.01;
   rightOffset = EEPROM.read(1) * 0.01;
 
-  // Initialize Gyroscope
   Serial.println("CALIBRATING GYRO. KEEP CAR PERFECTLY STILL...");
   byte mpuStatus = mpu.begin();
   if(mpuStatus != 0) {
     Serial.println("Could not connect to MPU6050!");
-    while(1); // Freeze if gyro is missing/miswired
+    while(1); 
   }
   delay(1000);
-  mpu.calcOffsets(); // Calibrates baseline offsets (car must be static here)
+  mpu.calcOffsets(); 
   Serial.println("GYRO CALIBRATED & READY");
 
-  // Initialize IR remote receiver
   IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); 
   Serial.println("REMOTE CONTROL START");
 }
 
 void loop() {
-  // Read gyro orientation on every loop cycle
+  // Constantly update the gyro so it tracks angles during operations
   mpu.update();
 
-  // 1. CHECK FOR IR REMOTE COMMANDS FIRST
+  // 1. IR REMOTE HANDLING
   if (IrReceiver.decode()) {
     String key = decodeKeyValue(IrReceiver.decodedIRData.command);
     
@@ -147,16 +149,16 @@ void loop() {
       Serial.println(key);
 
       if (key == "1") {
-        isSelfDriving = true;  // Activate self-driving
-        targetAngle = mpu.getAngleZ(); // Lock in current direction as "straight ahead"
-        integralE = 0;                 // Clear any leftover accumulated error
+        isSelfDriving = true;  
+        targetAngle = mpu.getAngleZ(); 
+        integralE = 0;                 
         Serial.println("Self-Driving: ON");
       } 
       else if (key == "2") {
-        isSelfDriving = false; // Deactivate self-driving
-        stopMove();            // Instantly stop the car
+        isSelfDriving = false; 
+        stopMove();            
         Serial.println("Self-Driving: OFF (STOPPED)");
-        playFinishedSound();   // Play the completion chime and reset IR
+        playFinishedSoundNonBlocking();   
       }
       else if (key == "3") {
         isSelfDriving = false;
@@ -165,115 +167,113 @@ void loop() {
         moveBackward(150);
       }
     }
-    IrReceiver.resume();  // Enable receiving of the next value
+    IrReceiver.resume();  
   }
 
-  // 2. EXECUTE SELF-DRIVING LOGIC (ONLY IF ACTIVATED)
+  // 2. SELF-DRIVING NAVIGATION
   if (isSelfDriving) {
     float distance = readSensorData();
-    int leftSide = digitalRead(leftIR);   // 0: Obstructed  1: Empty
+    int leftSide = digitalRead(leftIR);   
     int rightSide = digitalRead(rightIR);
 
-    // Ultrasonic sensor detects obstacle ahead
     if (distance >= 1.00 && distance <= 10.00) {
       stopMove();
       delay(200);
-      backRight(255);   // Turns RIGHT at max power to clear obstacle faster
-      delay(600);       
+      backRight(255);   
       
-      // Stop and let chassis settle before locking new direction
+      // Keep updating gyro orientation during execution pauses
+      unsigned long turnStart = millis();
+      while(millis() - turnStart < 600) { mpu.update(); }
+      
       stopMove();
       delay(150);
+      mpu.update();
       targetAngle = mpu.getAngleZ(); 
-      integralE = 0;    // Reset error accumulator for the new straight line path
+      integralE = 0;    
     } 
-    // Front path clear, check sides
     else {
       if (!leftSide && rightSide) {
-        // If left blocked turn left
         backLeft(255);
-        delay(400);
+        unsigned long turnStart = millis();
+        while(millis() - turnStart < 400) { mpu.update(); }
         
         stopMove();
         delay(150);
+        mpu.update();
         targetAngle = mpu.getAngleZ();
         integralE = 0;
       } 
       else if (leftSide && !rightSide) {
-        // If right blocked turn right
         backRight(255);
-        delay(400);
+        unsigned long turnStart = millis();
+        while(millis() - turnStart < 400) { mpu.update(); }
         
         stopMove();
         delay(150);
+        mpu.update();
         targetAngle = mpu.getAngleZ();
         integralE = 0;
       } 
       else if (!leftSide && !rightSide) {
-        // If both sides blocked back up
         moveBackward(150);
-        delay(500);
+        unsigned long turnStart = millis();
+        while(millis() - turnStart < 500) { mpu.update(); }
         
         stopMove();
         delay(150);
+        mpu.update();
         targetAngle = mpu.getAngleZ();
         integralE = 0;
       } 
-      // If everything clear, move straight using gyro correction
       else {
-        moveForwardGyro(150);
+        // Safe baseline speed for high voltage batteries
+        moveForwardGyro(130); 
       }
     } 
   }
 }
 
-// Gyroscope-assisted Forward Movement (PI Control)
 void moveForwardGyro(int baseSpeed) {
   float currentAngle = mpu.getAngleZ();
-  float error = targetAngle - currentAngle; // Calculate angular drift
+  float error = targetAngle - currentAngle; 
 
-  // Accumulate error over time to combat steady-state veering
   integralE += error;
-  
-  // Constrain integral to prevent "windup" (runaway runaway speed corrections)
   integralE = constrain(integralE, -50.0, 50.0); 
 
-  // Combined P (immediate) and I (time-based) correction
-  // Note: If car spins uncontrollably out of a straight line, remove the negative signs below
+  // Smooth PI correction output
   int correction = int((-error * kp) + (-integralE * ki)); 
 
-  // Apply correction adjustments to baseline wheel speeds
   int leftSpeed = baseSpeed + correction;
   int rightSpeed = baseSpeed - correction;
 
-  // Clamp constraints so PWM stays within valid limits (0 to 255)
   leftSpeed = constrain(leftSpeed, 0, 255);
   rightSpeed = constrain(rightSpeed, 0, 255);
 
-  // Drive H-bridge motors
   analogWrite(A_1B, 0);
   analogWrite(A_1A, int(leftSpeed * leftOffset));
   analogWrite(B_1B, int(rightSpeed * rightOffset));
   analogWrite(B_1A, 0);
 }
 
-// Function for buzzer when stopped moving
-void playFinishedSound() {
-  tone(BUZZER_PIN, 300, 150); 
-  delay(200);
-  tone(BUZZER_PIN, 350, 150); 
-  delay(200);
-  tone(BUZZER_PIN, 400, 400); 
-  delay(450);
-
-  noTone(BUZZER_PIN); // Relinquish timer hardware back to the system
+// Bypasses standard hardware Timer 2 conflicts with IRremote
+void playFinishedSoundNonBlocking() {
+  int notes[] = {300, 350, 400};
+  int durations[] = {150, 150, 400};
   
-  // Re-initialize the IR receiver so it continues to work after the buzzer sounds
-  IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); 
-  Serial.println("IR Receiver Reset & Ready");
+  for (int n = 0; n < 3; n++) {
+    long delayValue = 1000000 / notes[n] / 2; 
+    long numCycles = notes[n] * durations[n] / 1000; 
+    
+    for (long i = 0; i < numCycles; i++) {
+      digitalWrite(BUZZER_PIN, HIGH);
+      delayMicroseconds(delayValue);
+      digitalWrite(BUZZER_PIN, LOW);
+      delayMicroseconds(delayValue);
+    }
+    delay(200); 
+  }
 }
 
-// Function to read the ultrasonic distance sensor
 float readSensorData() {
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
@@ -299,20 +299,19 @@ void stopMove() {
 }
 
 void backLeft(int speed) {
-  analogWrite(A_1B, speed); // Left motor backwards
+  analogWrite(A_1B, speed); 
   analogWrite(A_1A, 0);
-  analogWrite(B_1B, speed); // Right motor forwards
+  analogWrite(B_1B, speed); 
   analogWrite(B_1A, 0);
 }
 
 void backRight(int speed) {
-  analogWrite(A_1B, 0);     // Left motor forwards
+  analogWrite(A_1B, 0);     
   analogWrite(A_1A, speed);
-  analogWrite(B_1B, 0);     // Right motor backwards
+  analogWrite(B_1B, 0);     
   analogWrite(B_1A, speed);
 }
 
-// Map the hexadecimal codes to remote button names
 String decodeKeyValue(long result) {
   switch(result){
     case 0x16: return "0";
