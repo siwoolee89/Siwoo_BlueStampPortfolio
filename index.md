@@ -10,7 +10,7 @@ A robot that cleans up the floor for me because I hate cleaning my room! We have
 <img width="678" height="501" alt="Screenshot 2026-07-07 at 3 59 54 PM" src="https://github.com/user-attachments/assets/7a027018-a5ef-4a4f-9b64-004608bcf3b6" />
 
 <!--  
-# Final Milestone
+# Modifications
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
@@ -23,12 +23,18 @@ For your final milestone, explain the outcome of your project. Key details to in
 - What you hope to learn in the future after everything you've learned at BSE
 -->
 
+# Final Milestone
+
+
+My final milestone was adding an IR receiver so that the car can take commands from a remote control. The remote control allows the user to control the robot. Clicking the button one makes the robot initiate a self drive function. Basically, it will move forward and turn to avoid obstacles, essentially driving by itself. However, the remote control also allows the user to directly control the robot. By clicking the button 2, the robot will stop moving and stay completely still until further instructions are given. Button 3 puts the car in reverse, making it go backwards. Button 4 and 6 makes the car turn left and right, respectively. Before, the robot would automatically move by itself as soon as the power was turned on. There was no way to stop the robot until the power was removed. Additionally, if the robot got stuck, there would be no way for the user to  free the robot unless they physically removed it from its surroundings. Now, with this remote control, the user has more control and maneuverability with the car. For my next steps, I plan on adding several modifications. First off, I will add two LEDs, a green one and a red one. The green one will light up when the robot goes forward, while the red one will light up when the car backs up. I also plan on adding a buzzer to let the user know when the robot is done cleaning. Additionally, I want to add a gyroscope. One issue with my current robot is that it does not move straight and will drift to one side. By using a gyroscope, the car will be able to adjust its position and realign itself so that it goes straight
+
 
 # Second Milestone
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XC_h1YrTGfY?si=G6Vd2hrbpergPy9Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-For my second milestone, I decided to make the code for the robot to move. This includes moving forward, backwards, left, and right. This will be important since the entire point of the project is for the car to be able to move so it can clean the floor. It will also be able to do more complex movements, such as avoiding obstacles by using sensors. The ultrasonic module can detect objects in front of it, and the car will move out of the way if there is something 2 to 10 cm in front of it. There are also sensors on the side of the car. This allows it to move out of the way if there is an obstacle on the side that the front sensor can't detect. However, there were several difficulties. Sometimes, the robot wouldn't go forward or turn properly. To fix this, I had to adjust the exterior. The vacuum cleaner was too heavy, so it weighed down the car. I taped a caster wheel onto the back of the vacuum. This allowed it to be slightly elavated above the ground so it doesn't cause friction. Additionally, I changed the speed of one of the wheels so that it doesn't swerve off to the side. Overall, the code seems to be working very well. The robot moves properly with little swerving. And when it detects an obstacle, it maneuvers out of the way properly. My next steps are going to be adding modifications. One modification I plan to add is a buzzer so that it can play a sound when the robot finishes cleaning.
+For my second milestone, I decided to make the code for the robot to move. This includes moving forward, backwards, left, and right. This will be important since the entire point of the project is for the car to be able to move so it can clean the floor. It will also be able to do more complex movements, such as avoiding obstacles by using sensors. The ultrasonic module can detect objects in front of it, and the car will move out of the way if there is something 2 to 10 cm in front of it. There are also sensors on the side of the car. This allows it to move out of the way if there is an obstacle on the side that the front sensor can't detect. However, there were several difficulties. Sometimes, the robot wouldn't go forward or turn properly. To fix this, I had to adjust the exterior. The vacuum cleaner was too heavy, so it weighed down the car. I taped a caster wheel onto the back of the vacuum. This allowed it to be slightly elavated above the ground so it doesn't cause friction. Additionally, I changed the speed of one of the wheels so that it doesn't swerve off to the side. Overall, the code seems to be working very well. The robot moves properly with little swerving. And when it detects an obstacle, it maneuvers out of the way properly. My next step is going to be adding an IR receiver. That way, it can take commands from a remote control and move based on what commands the user gives it.
+
 
 # First Milestone
 
@@ -44,7 +50,7 @@ As a starter project, I chose the retro arcade console. Some essential component
 
 
 # Schematics 
-<img width="985" height="546" alt="Screenshot 2026-07-07 at 3 59 45 PM" src="https://github.com/user-attachments/assets/b2034f05-db6f-4fb8-8353-87cdda3bd3c2" />
+<img width="746" height="424" alt="Screenshot 2026-07-14 at 4 16 19 PM" src="https://github.com/user-attachments/assets/c778bb26-241c-414e-90d1-a205299b11f2" />
 
 
 # Code
