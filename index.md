@@ -7,8 +7,6 @@ A robot that cleans up the floor for me because I hate cleaning my room! We have
 
 <img width="472" height="530" alt="Screenshot 2026-06-29 at 2 21 28 PM" src="https://github.com/user-attachments/assets/f5d4005c-0bb8-4d6e-a374-850f16c7ec4e" />
 
-<img width="678" height="501" alt="Screenshot 2026-07-07 at 3 59 54 PM" src="https://github.com/user-attachments/assets/7a027018-a5ef-4a4f-9b64-004608bcf3b6" />
-
 <!--  
 # Modifications
 
@@ -51,8 +49,18 @@ As a starter project, I chose the retro arcade console. Some essential component
 
 
 # Schematics 
-<img width="746" height="424" alt="Screenshot 2026-07-14 at 4 16 19 PM" src="https://github.com/user-attachments/assets/c778bb26-241c-414e-90d1-a205299b11f2" />
+1. Arduino UNO R3
+2. L9110 H-Brdige Motor Driver
+3. Motors
+4. Ultrasonic Module
+5. LEDs
+6. Buzzer
+7. MPU6050 Gyroscope
+8. IR Receiver
+9. IR Obstacle Avoidance Module
+<img width="708" height="385" alt="Screenshot 2026-07-20 at 4 22 58 PM" src="https://github.com/user-attachments/assets/dea8b654-8379-49a3-b87d-3f80939cc2fe" />
 
+<img width="774" height="571" alt="Screenshot 2026-07-20 at 4 23 43 PM" src="https://github.com/user-attachments/assets/fcffc4f8-bba1-440b-927b-b325026bb5e6" />
 
 # Code
 ```c++
