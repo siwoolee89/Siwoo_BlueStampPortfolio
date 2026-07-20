@@ -358,5 +358,5 @@ String decodeKeyValue(long result) {
 
 # Other Resources/Examples
 
-- https://docs.sunfounder.com/projects/3in1-kit-v2/en/latest/car_project/car_assemble.html
-- https://smitra123.github.io/Saagnik-Mitra-s-BSE-Portfolio/
+- [<a href="https://docs.sunfounder.com/projects/3in1-kit-v2/en/latest/car_project/car_assemble.html"> Link </a>
+- [<a href="https://smitra123.github.io/Saagnik-Mitra-s-BSE-Portfolio/"> Link </a>
