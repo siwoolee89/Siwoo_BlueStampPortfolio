@@ -1,26 +1,20 @@
 # Floor Cleaning Robot
 A robot that cleans up the floor for me because I hate cleaning my room! We have a roomba at my house, and it has been extremely helpful. So, I thought making my own to personally use for my room would be great to have. It will be able to move and also detect objects to maneuver around them.
 <p align="center">
-| **Engineer** | **School** | **Area of Interest** | **Grade** |
-|:--:|:--:|:--:|:--:|
 | Siwoo L. | Mitty | Electrical Engineering | Rising junior
 
 <p align="center">
 <img width="472" height="530" alt="Screenshot 2026-06-29 at 2 21 28 PM" src="https://github.com/user-attachments/assets/f5d4005c-0bb8-4d6e-a374-850f16c7ec4e" />
 
-<!--  
+
+
+  
 # Modifications
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-My final milestone was adding modifications. I added several new changes beyond the base robot, one of them being a remote control. The remote control doesn't allow you to explicitly control the robot, but it does allow you to stop the car and move it backwards. It also has a button to initiate self driving. Basically, the self driving is the code from the previous milestone, allowing the car to turn when it sees obstacles and continue moving forward. It is automatic, and doesn't require you to control the robot. Additionally, when the car is told to stop, it will also play a buzzer sound to let the user know it has stopped moving. Another button makes it move in reverse until it is told to stop. These options were added because I originally wanted a way for the robot to let the user know when it is done cleaning. So, I decided the best way is for the user to tell the robot when to stop themselves. This way, it still allows the robot the be automatic while also allowing the user to stop the car when they are personally satisfied with the job. It also allows for a bit more maneuverability with the reverse function. I also added a gyroscope. I mounted it onto the breadboard and wired it into the arduino. Afterwards, I programmed it so that the car could move in a straight line. There were several issues with this however. Sometimes, the car still moved off to the side or even stopped entirely. To fix this, I had to replace the battery. I also had to increase the correction strength of the gyroscope. After making these changes, when the car veers a bit to one direction, the gyroscope will realign the car so that it goes back into a straight line. This was a helpful addition to the car since it would always swerve to one side. 
+I added several modifications besides the base project. One modification I added was a buzzer. The buzzer plays a sound to let the user know the robot has stopped moving. Additionally, I added a timer. After the time is up, the car will stop moving and also play the buzzer sound. Another modification I added were LED lights. I had a red and green light. The green LED lights up when the car is moving forward, and the red LED lights up when it moves backwards. I also added a gyroscope. I mounted it onto the breadboard and wired it into the arduino. Afterwards, I programmed it so that the car could move in a straight line. There were several issues with this however. Sometimes, the car still moved off to the side or even stopped entirely. To fix this, I had to replace the battery. I also had to increase the correction strength of the gyroscope. After making these changes, when the car veers a bit to one direction, the gyroscope will realign the car so that it goes back into a straight line. This was a helpful addition to the car since it would always swerve to one side. This was definitely the most difficult part of my project, and I thought many times of ditching the idea. However, one thing Bluestamp taught me was perseverance. Make mistakes and learn from them. And besides the conceptual stuff, Bluestamp also taught me many important mechanical things. I never knew about soldering, wiring, or coding before coming here. I think this has been a real transformative experience. Everything I learned here will serve as a foundation as I continue on in my engineering journey.
 
-For your final milestone, explain the outcome of your project. Key details to include are:
-- What you've accomplished since your previous milestone
-- What your biggest challenges and triumphs were at BSE
-- A summary of key topics you learned about
-- What you hope to learn in the future after everything you've learned at BSE
--->
 
 # Final Milestone
 
@@ -72,89 +66,107 @@ As a starter project, I chose the retro arcade console. Some essential component
 
 MPU6050 mpu(Wire);
 
+const int GREEN_LED = 2;
+const int RED_LED = A2;
+
 const int IR_RECEIVE_PIN = 12;  
-const int BUZZER_PIN = 11;      // Custom non-blocking buzzer to avoid timer conflicts
+const int BUZZER_PIN = 11;      
 
 float leftOffset = 1.0;
 float rightOffset = 1.0;
 
-// --- TUNED FOR FRESH BATTERIES ---
-float targetAngle = 0;
-float kp = 4.0;        // Bumped up to give the gyro more correction strength
-float ki = 0.15;       // Re-enabled a small amount to eliminate the steady left pull
-float integralE = 0;  
+unsigned long selfDriveStartTime = 0;
+const unsigned long DRIVE_DURATION = 30000; // 30 seconds
 
+// --- BALANCED PID VALUES ---
+float targetAngle = 0;
+float kp = 40.0;       // Smooth proportional gain
+float ki = 0.0;       
+float kd = 16.0;       // Damping gain
+float integralE = 0;  
+float lastError = 0;    
+
+// Motor Driver Pins
 const int A_1B = 5;
 const int A_1A = 6;
 const int B_1B = 9;
 const int B_1A = 10;
 
-const int trigPin = 3;
-const int echoPin = 4;
-
-const int rightIR = 7;
-const int leftIR = 8;
+// --- 3x ULTRASONIC SENSORS ---
+const int trigCenter = 3;  const int echoCenter = 4;
+const int trigLeft   = A0; const int echoLeft   = A1;
+const int trigRight  = 7;  const int echoRight  = 8;
 
 bool isSelfDriving = false; 
 
 // Function prototypes
 String decodeKeyValue(long result);
-float readSensorData();
+float getDistance(int trigPin, int echoPin);
 void moveForwardGyro(int baseSpeed); 
-void moveBackward(int speed);
+void moveBackwardGyro(int baseSpeed);
 void stopMove();
 void backLeft(int speed);
 void backRight(int speed);
 void playFinishedSoundNonBlocking(); 
+bool checkForRemoteInterrupt();
 
 void setup() {
   Serial.begin(9600);
   Wire.begin();
 
+  pinMode(GREEN_LED, OUTPUT);
+  pinMode(RED_LED, OUTPUT);
+
   pinMode(A_1B, OUTPUT);
   pinMode(A_1A, OUTPUT);
   pinMode(B_1B, OUTPUT);
   pinMode(B_1A, OUTPUT);
-
-  pinMode(leftIR, INPUT);
-  pinMode(rightIR, INPUT);
   
   pinMode(BUZZER_PIN, OUTPUT); 
 
-  // --- MOTOR POWER BALANCE CALIBRATION ---
-  // Default equal power:
-  EEPROM.write(0, 100); // Left motor power (0 to 100%)
-  EEPROM.write(1, 100); // Right motor power (0 to 100%)
+  pinMode(trigCenter, OUTPUT); pinMode(echoCenter, INPUT);
+  pinMode(trigLeft, OUTPUT);   pinMode(echoLeft, INPUT);
+  pinMode(trigRight, OUTPUT);  pinMode(echoRight, INPUT);
+
+  EEPROM.write(0, 100); 
+  EEPROM.write(1, 100); 
   
-  // NOTE: If your car hooks hard RIGHT immediately on takeoff, uncomment these:
-  // EEPROM.write(0, 85);  // Throttle down the stronger left motor
-  // EEPROM.write(1, 100);
-
-  // NOTE: If your car hooks hard LEFT immediately on takeoff, uncomment these:
-  // EEPROM.write(0, 100);
-  // EEPROM.write(1, 85);   // Throttle down the stronger right motor
-
-  pinMode(echoPin, INPUT);
-  pinMode(trigPin, OUTPUT);
   leftOffset = EEPROM.read(0) * 0.01;
   rightOffset = EEPROM.read(1) * 0.01;
 
-  Serial.println("CALIBRATING GYRO. KEEP CAR PERFECTLY STILL...");
+  delay(1000); // Allow power to fully stabilize
+
+  Serial.println("CONNECTING TO MPU6050 (0x68)...");
   byte mpuStatus = mpu.begin();
-  if(mpuStatus != 0) {
-    Serial.println("Could not connect to MPU6050!");
-    while(1); 
+  if (mpuStatus != 0) {
+    Serial.println("Could not connect to MPU6050! Check wiring.");
+    while (1) {
+      digitalWrite(RED_LED, HIGH);
+      delay(200);
+      digitalWrite(RED_LED, LOW);
+      delay(200);
+    }
   }
-  delay(1000);
+
+  Serial.println("CALIBRATING GYRO... KEEP CAR PERFECTLY STILL!");
+  delay(500);
   mpu.calcOffsets(); 
-  Serial.println("GYRO CALIBRATED & READY");
+
+  // --- FILTER WARMUP LOOP ---
+  // Flushes out the initial X/Y sensor decay spike before driving starts
+  Serial.println("FLUSHING FILTER NOISE...");
+  for (int i = 0; i < 200; i++) {
+    mpu.update();
+    delay(10);
+  }
+
+  Serial.println("GYRO FULLY CALIBRATED & SETTLED!");
 
   IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); 
-  Serial.println("REMOTE CONTROL START");
+  Serial.println("REMOTE CONTROL READY");
 }
 
 void loop() {
-  // Constantly update the gyro so it tracks angles during operations
   mpu.update();
 
   // 1. IR REMOTE HANDLING
@@ -166,21 +178,55 @@ void loop() {
 
       if (key == "1") {
         isSelfDriving = true;  
+        stopMove();
+        delay(100);
+        
+        mpu.update();                  
         targetAngle = mpu.getAngleZ(); 
         integralE = 0;                 
+        lastError = 0;         
+        selfDriveStartTime = millis(); 
         Serial.println("Self-Driving: ON");
-      } 
+      }
       else if (key == "2") {
         isSelfDriving = false; 
         stopMove();            
-        Serial.println("Self-Driving: OFF (STOPPED)");
+        Serial.println("Self-Driving: OFF");
         playFinishedSoundNonBlocking();   
       }
       else if (key == "3") {
         isSelfDriving = false;
         stopMove();
-        delay(500);
-        moveBackward(150);
+        delay(200);
+        
+        mpu.update();                  
+        targetAngle = mpu.getAngleZ(); 
+        integralE = 0;                 
+        lastError = 0;         
+        
+        moveBackwardGyro(150);
+      }
+      else if (key == "4") {
+        isSelfDriving = false; 
+        
+        unsigned long turnStart = millis();
+        while (millis() - turnStart < 250) { 
+          backLeft(200); 
+          mpu.update();   
+        }
+        stopMove(); 
+        Serial.println("Manual Turn Left");
+      }
+      else if (key == "6") {
+        isSelfDriving = false; 
+        
+        unsigned long turnStart = millis();
+        while (millis() - turnStart < 250) { 
+          backRight(200);  
+          mpu.update();   
+        }
+        stopMove(); 
+        Serial.println("Manual Turn Right");
       }
     }
     IrReceiver.resume();  
@@ -188,79 +234,174 @@ void loop() {
 
   // 2. SELF-DRIVING NAVIGATION
   if (isSelfDriving) {
-    float distance = readSensorData();
-    int leftSide = digitalRead(leftIR);   
-    int rightSide = digitalRead(rightIR);
+    float centerDist = getDistance(trigCenter, echoCenter);
+    float leftDist   = getDistance(trigLeft, echoLeft);
+    float rightDist  = getDistance(trigRight, echoRight);
 
-    if (distance >= 1.00 && distance <= 10.00) {
+    unsigned long elapsed = millis() - selfDriveStartTime;
+
+    if (elapsed >= DRIVE_DURATION) {
+      isSelfDriving = false; 
+      stopMove();            
+      Serial.println("!!! TIMER EXPIRED - Auto-Stop Triggered !!!");
+      playFinishedSoundNonBlocking();
+      return;
+    }
+
+    // A. OBSTACLE DIRECTLY IN FRONT (1 cm to 10 cm)
+    if (centerDist >= 1.00 && centerDist <= 10.00) {
       stopMove();
-      delay(200);
-      backRight(255);   
-      
-      // Keep updating gyro orientation during execution pauses
-      unsigned long turnStart = millis();
-      while(millis() - turnStart < 600) { mpu.update(); }
+      delay(100);
+
+      // Back up
+      moveBackwardGyro(150);
+      unsigned long actionStart = millis();
+      while (millis() - actionStart < 350) { 
+        mpu.update(); 
+        if (checkForRemoteInterrupt()) return;
+      }
+
+      stopMove();
+      delay(100);
+
+      // Pivot turn
+      backLeft(220);   
+      actionStart = millis();
+      while (millis() - actionStart < 450) { 
+        mpu.update(); 
+        if (checkForRemoteInterrupt()) return;
+      }
       
       stopMove();
       delay(150);
       mpu.update();
       targetAngle = mpu.getAngleZ(); 
       integralE = 0;    
+      lastError = 0;           
     } 
-    else {
-      if (!leftSide && rightSide) {
-        backLeft(255);
-        unsigned long turnStart = millis();
-        while(millis() - turnStart < 400) { mpu.update(); }
-        
-        stopMove();
-        delay(150);
-        mpu.update();
-        targetAngle = mpu.getAngleZ();
-        integralE = 0;
-      } 
-      else if (leftSide && !rightSide) {
-        backRight(255);
-        unsigned long turnStart = millis();
-        while(millis() - turnStart < 400) { mpu.update(); }
-        
-        stopMove();
-        delay(150);
-        mpu.update();
-        targetAngle = mpu.getAngleZ();
-        integralE = 0;
-      } 
-      else if (!leftSide && !rightSide) {
-        moveBackward(150);
-        unsigned long turnStart = millis();
-        while(millis() - turnStart < 500) { mpu.update(); }
-        
-        stopMove();
-        delay(150);
-        mpu.update();
-        targetAngle = mpu.getAngleZ();
-        integralE = 0;
-      } 
-      else {
-        // Safe baseline speed for high voltage batteries
-        moveForwardGyro(130); 
+    // B. OBSTACLE ON LEFT SIDE ONLY
+    else if (leftDist > 1.0 && leftDist <= 7.0 && rightDist > 7.0) {
+      moveBackwardGyro(140);
+      unsigned long actionStart = millis();
+      while (millis() - actionStart < 200) { 
+        mpu.update(); 
+        if (checkForRemoteInterrupt()) return;
       }
+
+      backLeft(220); 
+      actionStart = millis();
+      while (millis() - actionStart < 300) { 
+        mpu.update(); 
+        if (checkForRemoteInterrupt()) return;
+      }
+      
+      stopMove();
+      delay(150);
+      mpu.update();
+      targetAngle = mpu.getAngleZ();
+      integralE = 0;
+      lastError = 0;         
     } 
+    // C. OBSTACLE ON RIGHT SIDE ONLY
+    else if (rightDist > 1.0 && rightDist <= 7.0 && leftDist > 7.0) {
+      moveBackwardGyro(140);
+      unsigned long actionStart = millis();
+      while (millis() - actionStart < 200) { 
+        mpu.update(); 
+        if (checkForRemoteInterrupt()) return;
+      }
+
+      backRight(220); 
+      actionStart = millis();
+      while (millis() - actionStart < 300) { 
+        mpu.update(); 
+        if (checkForRemoteInterrupt()) return;
+      }
+      
+      stopMove();
+      delay(150);
+      mpu.update();
+      targetAngle = mpu.getAngleZ();
+      integralE = 0;
+      lastError = 0;         
+    } 
+    // D. OBSTACLES ON BOTH SIDES
+    else if (leftDist > 1.0 && leftDist <= 7.0 && rightDist > 1.0 && rightDist <= 7.0) {
+      moveBackwardGyro(160); 
+      unsigned long actionStart = millis();
+      while (millis() - actionStart < 500) { 
+        mpu.update(); 
+        if (checkForRemoteInterrupt()) return;
+      }
+      
+      stopMove();
+      delay(150);
+      mpu.update();
+      targetAngle = mpu.getAngleZ();
+      integralE = 0;
+      lastError = 0;         
+    } 
+    // E. CLEAR PATH - DRIVE FORWARD
+    else {
+      moveForwardGyro(160); 
+    }
   }
 }
 
+// --- HELPER TO CHECK REMOTE DURING TURN LOOPS ---
+bool checkForRemoteInterrupt() {
+  if (IrReceiver.decode()) {
+    String key = decodeKeyValue(IrReceiver.decodedIRData.command);
+    if (key == "2" || key == "POWER") { 
+      isSelfDriving = false;
+      stopMove();
+      IrReceiver.resume();
+      return true;
+    }
+    IrReceiver.resume();
+  }
+  return false;
+}
+
+// --- HELPER FUNCTION FOR ULTRASONIC READINGS ---
+float getDistance(int trigPin, int echoPin) {
+  mpu.update(); 
+
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  
+  float distance = pulseIn(echoPin, HIGH, 10000) / 58.00; 
+
+  if (distance == 0) {
+    return 999.0;
+  }
+  
+  return distance;
+}
+
+// --- PID FORWARD FUNCTION ---
 void moveForwardGyro(int baseSpeed) {
+  digitalWrite(GREEN_LED, HIGH); 
+  digitalWrite(RED_LED, LOW);    
+
+  // FORCE FRESH SENSOR READ
+  mpu.update();
+
   float currentAngle = mpu.getAngleZ();
   float error = targetAngle - currentAngle; 
 
-  integralE += error;
-  integralE = constrain(integralE, -50.0, 50.0); 
+  float derivative = error - lastError; 
+  int correction = int((error * kp) + (derivative * kd)); 
+  lastError = error; 
 
-  // Smooth PI correction output
-  int correction = int((-error * kp) + (-integralE * ki)); 
+  // Clamp correction to prevent motor lockup (+/- 35 max)
+  correction = constrain(correction, -90, 90);
 
-  int leftSpeed = baseSpeed + correction;
-  int rightSpeed = baseSpeed - correction;
+  int leftSpeed = baseSpeed - correction;
+  int rightSpeed = baseSpeed + correction;
 
   leftSpeed = constrain(leftSpeed, 0, 255);
   rightSpeed = constrain(rightSpeed, 0, 255);
@@ -271,7 +412,6 @@ void moveForwardGyro(int baseSpeed) {
   analogWrite(B_1A, 0);
 }
 
-// Bypasses standard hardware Timer 2 conflicts with IRremote
 void playFinishedSoundNonBlocking() {
   int notes[] = {300, 350, 400};
   int durations[] = {150, 150, 400};
@@ -290,24 +430,37 @@ void playFinishedSoundNonBlocking() {
   }
 }
 
-float readSensorData() {
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  float distance = pulseIn(echoPin, HIGH) / 58.00; 
-  return distance;
-}
+void moveBackwardGyro(int baseSpeed) {
+  digitalWrite(GREEN_LED, LOW);   
+  digitalWrite(RED_LED, HIGH);   
 
-void moveBackward(int speed) {
-  analogWrite(A_1B, int(speed * leftOffset));
+  mpu.update();
+
+  float currentAngle = mpu.getAngleZ();
+  float error = currentAngle - targetAngle; 
+
+  float derivative = error - lastError; 
+  int correction = int((error * kp) + (derivative * kd)); 
+  lastError = error; 
+
+  correction = constrain(correction, -35, 35);
+
+  int leftSpeed = baseSpeed - correction;
+  int rightSpeed = baseSpeed + correction;
+
+  leftSpeed = constrain(leftSpeed, 0, 255);
+  rightSpeed = constrain(rightSpeed, 0, 255);
+
+  analogWrite(A_1B, int(leftSpeed * leftOffset));
   analogWrite(A_1A, 0);
   analogWrite(B_1B, 0);
-  analogWrite(B_1A, int(speed * rightOffset));
+  analogWrite(B_1A, int(rightSpeed * rightOffset));
 }
 
 void stopMove() {
+  digitalWrite(GREEN_LED, LOW); 
+  digitalWrite(RED_LED, LOW);
+
   analogWrite(A_1B, 0);
   analogWrite(A_1A, 0);
   analogWrite(B_1B, 0);
