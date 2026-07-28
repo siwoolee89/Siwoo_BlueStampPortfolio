@@ -1,22 +1,21 @@
 # Floor Cleaning Robot
 A robot that cleans up the floor for me because I hate cleaning my room! We have a roomba at my house, and it has been extremely helpful. So, I thought making my own to personally use for my room would be great to have. It will be able to move and also detect objects to maneuver around them.
-<p align="center">
-Siwoo L. | Mitty | Electrical Engineering | Rising junior
+<div align="center">
+**Siwoo L. | Mitty | Electrical Engineering | Rising junior**
   
-<p align="center">
 <img width="472" height="530" alt="Screenshot 2026-06-29 at 2 21 28 PM" src="https://github.com/user-attachments/assets/f5d4005c-0bb8-4d6e-a374-850f16c7ec4e" />
+</div>
 
+---
 
-
-<p align="left">
-# Modifications
+## Modifications
 
 
 I added several modifications besides the base project. One modification I added was a buzzer. The buzzer plays a sound to let the user know the robot has stopped moving. Additionally, I added a timer. After the time is up, the car will stop moving and also play the buzzer sound. Another modification I added were LED lights. I had a red and green light. The green LED lights up when the car is moving forward, and the red LED lights up when it moves backwards. I also added a gyroscope. I mounted it onto the breadboard and wired it into the arduino. Afterwards, I programmed it so that the car could move in a straight line. There were several issues with this however. Sometimes, the car still moved off to the side or even stopped entirely. To fix this, I had to replace the battery. I also had to increase the correction strength of the gyroscope. After making these changes, when the car veers a bit to one direction, the gyroscope will realign the car so that it goes back into a straight line. This was a helpful addition to the car since it would always swerve to one side. This was definitely the most difficult part of my project, and I thought many times of ditching the idea. However, one thing Bluestamp taught me was perseverance. Make mistakes and learn from them. And besides the conceptual stuff, Bluestamp also taught me many important mechanical things. I never knew about soldering, wiring, or coding before coming here. I think this has been a real transformative experience. Everything I learned here will serve as a foundation as I continue on in my engineering journey.
 
 
 
-# Final Milestone
+## Final Milestone
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/egsT9s4-E2g?si=jijALDdNPPh8MfX2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -25,7 +24,7 @@ My final milestone was adding an IR receiver so that the car can take commands f
 
 
 
-# Second Milestone
+## Second Milestone
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XC_h1YrTGfY?si=G6Vd2hrbpergPy9Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -34,7 +33,7 @@ For my second milestone, I decided to make the code for the robot to move. This 
 
 
 
-# First Milestone
+## First Milestone
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Skr94AJwVgE?si=Ho1cachBUrD_6yUX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -42,7 +41,7 @@ For my second milestone, I decided to make the code for the robot to move. This 
 For my first milestone, I wanted to complete the exterior and design of the robot and also do the wiring. The components include wheels, an arduino board, a battery, breadboards, a vacuum, an ultrasonic sensor, and some other important items. The wheels and motor are what allow the robot to maneuver. The arduino board is used to mount the code and get the robot to move. The battery powers the system. The ultrasonic sensor will allow the robot to detect obstacles in front of it, and provide real time data so it can adjust and maneuver around the obstruction. There were several difficulties in the construction of the robot. There were instructions in order to build it, which was simple enough; however, there were no instructions for attaching the vacuum cleaner to the robot. To solve this, I removed the small breadboard and replaced it with a full sized breadboard. I attached the vacuum to one end of the breadboard, and planned to attach the other end to the robot so the vacuum sticks out in front of the robot. However, this led to a few other complications. First off, the vacuum cleaner was too big and tall for the robot, so the breadboard wouldn't be able to stick to the robot. So, I got another small breadboard and simply attached that to the robot first. Then I attached the full sized breadboard on top of the small one. Another issue was attaching the ultrasonic module. Because the circuits in breadboards are only connected across each row, the ultrasonic module would not be able to be pointed straight. So, I took the small breadboard from before and stuck on top of the edge of the full sized breadboard. I put it perpendicular to the full sized breadboard so the I could point the ultrasonic sensor forward while keeping the pins up and down a column. Overall, the design of the car works perfectly and all the wires are connected to the proper places. My next step is coding the robot so that it can move properly.
 
 
-# Starter
+## Starter
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/qBhGqpVJxa8?si=h7hAl-xQ921PcBfY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
